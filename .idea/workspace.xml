@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="483dd14f-bd27-4ed0-8439-1ea9a73e1236" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/scripts/bruno_agregate_olympiads.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/scripts/bruno_check_if_possible_to_extract_table_from_pdf.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/scripts/bruno_ML.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/scripts/bruno_merging_stuff_to_masterfile.py" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -26,11 +27,36 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bruno_agregate_olympiads.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="bruno_agregate_olympiads.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/bruno_agregate_olympiads.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="576">
               <caret line="24" column="52" lean-forward="false" selection-start-line="24" selection-start-column="52" selection-end-line="24" selection-end-column="52" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bruno_merging_stuff_to_masterfile.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/bruno_merging_stuff_to_masterfile.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="652">
+              <caret line="123" column="78" lean-forward="false" selection-start-line="123" selection-start-column="78" selection-end-line="123" selection-end-column="78" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+                <element signature="e#3124#3162#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bruno_ML.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/scripts/bruno_ML.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="622">
+              <caret line="37" column="14" lean-forward="false" selection-start-line="37" selection-start-column="14" selection-end-line="37" selection-end-column="14" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -47,6 +73,11 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>print</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -55,14 +86,16 @@
       <list>
         <option value="$PROJECT_DIR$/scripts/bruno_check_if_possible_to_extract_table_from_pdf.py" />
         <option value="$PROJECT_DIR$/scripts/bruno_agregate_olympiads.py" />
+        <option value="$PROJECT_DIR$/scripts/bruno_merging_stuff_to_masterfile.py" />
+        <option value="$PROJECT_DIR$/scripts/bruno_ML.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="992" />
-    <option name="y" value="24" />
-    <option name="width" value="928" />
-    <option name="height" value="1416" />
+    <option name="x" value="974" />
+    <option name="y" value="-2" />
+    <option name="width" value="926" />
+    <option name="height" value="1408" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -114,7 +147,25 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.bruno_agregate_olympiads">
+  <component name="RunManager" selected="Python.bruno_ML">
+    <configuration name="bruno_ML" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="edufuture" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/bruno_ML.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
     <configuration name="bruno_agregate_olympiads" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -151,14 +202,36 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <list size="2">
+    <configuration name="bruno_merging_stuff_to_masterfile" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="edufuture" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/bruno_merging_stuff_to_masterfile.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <list size="4">
       <item index="0" class="java.lang.String" itemvalue="Python.bruno_check_if_possible_to_extract_table_from_pdf" />
       <item index="1" class="java.lang.String" itemvalue="Python.bruno_agregate_olympiads" />
+      <item index="2" class="java.lang.String" itemvalue="Python.bruno_merging_stuff_to_masterfile" />
+      <item index="3" class="java.lang.String" itemvalue="Python.bruno_ML" />
     </list>
     <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Python.bruno_agregate_olympiads" />
-        <item index="1" class="java.lang.String" itemvalue="Python.bruno_check_if_possible_to_extract_table_from_pdf" />
+      <list size="4">
+        <item index="0" class="java.lang.String" itemvalue="Python.bruno_ML" />
+        <item index="1" class="java.lang.String" itemvalue="Python.bruno_merging_stuff_to_masterfile" />
+        <item index="2" class="java.lang.String" itemvalue="Python.bruno_agregate_olympiads" />
+        <item index="3" class="java.lang.String" itemvalue="Python.bruno_check_if_possible_to_extract_table_from_pdf" />
       </list>
     </recent_temporary>
   </component>
@@ -179,16 +252,16 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="992" y="24" width="2497" height="1452" extended-state="6" />
+    <frame x="65" y="-4" width="2495" height="1444" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32927758" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.43269962" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32927758" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24989791" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13883218" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="R Packages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="R Graphics" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -226,6 +299,35 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="576">
           <caret line="24" column="52" lean-forward="false" selection-start-line="24" selection-start-column="52" selection-end-line="24" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/obrec/lib/python3.5/site-packages/pandas/core/indexes/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="2559" column="0" lean-forward="false" selection-start-line="2559" selection-start-column="0" selection-end-line="2559" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/bruno_merging_stuff_to_masterfile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="652">
+          <caret line="123" column="78" lean-forward="false" selection-start-line="123" selection-start-column="78" selection-end-line="123" selection-end-column="78" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#3124#3162#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/bruno_ML.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="622">
+          <caret line="37" column="14" lean-forward="false" selection-start-line="37" selection-start-column="14" selection-end-line="37" selection-end-column="14" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
