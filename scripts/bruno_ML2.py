@@ -1,19 +1,17 @@
 import sys
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
+# from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import confusion_matrix
 import warnings
-import matplotlib.pyplot as plt
 warnings.filterwarnings("ignore")
 
 
 tab = pd.read_csv("/home/administrator/repos/edufuture/data/modelling_table.csv", sep="|")
-print(np.unique(tab["Year"]))
-
 
 x_names_cathegorical = ['Language']
-x_names_nummerical = ["Number_of_students", "cnt_olympiad_entries", 'ANG9', 'MAT9', 'MAT12', 'LAT12', 'LAT9', 'ANG12', "dist_to_nierest", "reg_iedz_skaits", "student_diff", "yearlychange"]
+x_names_nummerical = ["Number_of_students", "cnt_olympiad_entries", 'ANG9', 'MAT9', 'MAT12', 'LAT12', 'LAT9', 'ANG12', "dist_to_nierest", "reg_iedz_skaits", "student_diff"]
 
 
 def prepare_data(tab):
@@ -25,16 +23,13 @@ def prepare_data(tab):
     return X, tab["Y"]
 
 
-# weights = list(range(10, 40))
+# weights = list(range(2, 30))
 # waccs = []
 # for w in weights:
-#     model = RandomForestClassifier(
+#     model = GradientBoostingClassifier(
 #         criterion="entropy",
-#         max_depth=5,
-#         n_estimators=300,
-#         n_jobs=4,
-#         class_weight={0: w, 1: 1},
-#         oob_score=True
+#         max_depth=2,
+#         n_estimators=100
 #     )
 #     # print(X)
 #     X, Y = prepare_data(tab)
@@ -52,46 +47,40 @@ def prepare_data(tab):
 w0 = 28
 print(w0)
 # w0 = 15
-model = RandomForestClassifier(
-    random_state=0,
-    criterion="entropy",
-    max_depth=5,
-    n_estimators=300,
-    n_jobs=4,
-    class_weight={0: w0, 1: 1},
-    oob_score=True
-)
+model = GradientBoostingClassifier(
+        # criterion="entropy",
+        max_depth=5,
+        n_estimators=100,
+    )
+
 # print(X)
 X, Y = prepare_data(tab)
 mask_train = tab.Year < 2018
 mask_test = np.logical_not(mask_train)
+class_weight={0: w0, 1: 1}
 
-# exam_vars = 'ANG9', 'MAT9', 'MAT12', 'LAT12', 'LAT9', 'ANG12'
-# for v in exam_vars:
-#     print(v, np.average(X[mask_test][v] !=-1))
-# sys.exit()
+sample_weights = np.asarray([class_weight[c] for c in Y[mask_train]])
 
-model.fit(X[mask_train], Y[mask_train])
+model.fit(X[mask_train], Y[mask_train], sample_weight=sample_weights)
 preds = model.predict(X[mask_test])
 cm = confusion_matrix(Y[mask_test], preds)
 
-# output = pd.DataFrame({
-#     "school_name": tab[mask_test]["School_Name"],
-#     "prob_survive": model.predict_proba(X[mask_test])
-# })
+wacc = np.average(np.diag(cm) / np.sum(cm, axis=1))
 
-tab["prob_survival"] = -1.0
-tab["prob_survival"][mask_test] = model.predict_proba(X[mask_test])[:, 1]
+output = pd.DataFrame({
+    "school_name": tab[mask_test]["School_Name"],
+    "prob_survive": model.predict_proba(X[mask_test])
+})
 
-plt.hist(tab["prob_survival"][mask_test])
-plt.show()
+tab["prob_survival"] = -1
+tab["prob_survival"][mask_test] = model.predict_proba(X[mask_test])
 
-tab.to_csv("/home/administrator/repos/edufuture/data/school_predictions_2019.csv")
+output.to_csv("/home/administrator/repos/edufuture/data/school_predictions_2019.csv")
 
 print(cm)
 print("prediction distribution", np.unique(model.predict(X[mask_test]), return_counts=True))
-
-print("accuracy", model.score(X[mask_test], Y[mask_test]))
+wacc = np.average(np.diag(cm) / np.sum(cm, axis=1))
+print("accuracy", model.score(X[mask_test], Y[mask_test]), wacc)
 
 inds = np.argsort(-model.feature_importances_)
 for i in inds:

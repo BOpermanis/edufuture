@@ -6,7 +6,18 @@ from glob import glob
 from re import findall
 from scipy.spatial import distance_matrix
 
-tab = pd.read_excel("/home/administrator/repos/edufuture/data/Master_table_with population.xlsx")
+# tab = pd.read_excel("/home/administrator/repos/edufuture/data/Master_table_with population.xlsx")
+tab = pd.read_excel("/home/administrator/repos/edufuture/data/Master_table_cleaned_2.xlsx")
+
+dict_pupil_cnt = {}
+for _, row in tab.iterrows():
+    dict_pupil_cnt[(row["School_Name"], row["Year"])] = row["Number_of_students"]
+
+
+
+tab = tab[tab.Year > 2009]
+
+tab["student_diff"] = tab.apply(lambda row: row["Number_of_students"] - dict_pupil_cnt[(row["School_Name"], row["Year"] - 1)], axis=1)
 
 # iedz skaits
 
@@ -112,11 +123,6 @@ for f in glob("/home/administrator/Downloads/Exam results/*.csv"):
 
     if novads not in tab_exam.columns:
         tab_exam[novads] = ""
-
-    if tab_exam.shape[1] < 5 and novads not in tab_exam.columns:
-        print(tab_exam.columns)
-        print(tab_exam.shape)
-        sys.exit()
 
     tab_exam[school_name] = tab_exam[school_name].apply(normalize_shool_name)
     tab_exam[school_name + "_1"] = tab_exam.apply(lambda row: normalize_shool_name(str(row[novads]) + ", " + row[school_name]), axis=1)
