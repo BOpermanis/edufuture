@@ -4,9 +4,34 @@ from pprint import pprint
 import numpy as np
 from glob import glob
 from re import findall
+from scipy.spatial import distance_matrix
 
-# tab = pd.read_csv("/home/administrator/repos/edufuture/data/Master_table.csv", sep="|")
-tab = pd.read_excel("/home/administrator/repos/edufuture/data/Master_table.xlsx")
+tab = pd.read_excel("/home/administrator/repos/edufuture/data/Master_table_with population.xlsx")
+
+# iedz skaits
+
+tab["reg_iedz_skaits"] = tab.apply(lambda row: row['Republikas pilsētas populācija'] if row['Novada populācija'] == "--" else row['Novada populācija'], axis=1)
+
+tab["Year"] = tab["Year"].apply(int)
+
+# nearest school
+tab.sort_values(by="Year", inplace=True)
+dict_closest_distance = {}
+
+for year, tab1 in tab.groupby("Year"):
+    coords = np.stack([tab1['LAT'], tab1['LON']], axis=1)
+    school_names = list(tab1['School_Name'])
+
+    dists = distance_matrix(coords, coords)
+    for i, name in enumerate(school_names):
+        inds = np.argsort(dists[i, :])
+
+        for i0 in inds:
+            if dists[i, i0] > 0:
+                dict_closest_distance[(name, year)] = dists[i, i0]
+                break
+
+tab["dist_to_nierest"] = tab.apply(lambda row: dict_closest_distance[(row["School_Name"], row["Year"])], axis=1)
 
 print(tab.columns)
 tab.fillna(value="", inplace=True)
@@ -67,59 +92,51 @@ print(np.unique(tab["Year"]))
 
 tab["cnt_olympiad_entries"] = tab.apply(lambda row: dict_schooldata_to_ol.get((row["School_Name"], row["Year"]), 0), axis=1)
 
-
+del tab1
 set_eksamenu_prieksmeti = set()
-years = set()
-school_names = set()
+dict_schooldata_to_ol = {}
+
 for f in glob("/home/administrator/Downloads/Exam results/*.csv"):
     print(f)
-    tab1 = pd.read_csv(f)
-    tab1.fillna(value="", inplace=True)
-    print(tab1.shape)
+    tab_exam = pd.read_csv(f)
+    tab_exam.fillna(value="", inplace=True)
+    print(tab_exam.shape)
     year = int(findall(r'[0-9]*_([0-9]*).csv', f)[0])
-    school_name = "Izglītības iestāde" if "Izglītības iestāde" in tab1.columns else "Skola"
-    school_name = "Izglītībasiestāde" if school_name not in tab1.columns else school_name
-    school_name = "IzglītībasIestāde" if school_name not in tab1.columns else school_name
-    school_name = "Nosaukums" if school_name not in tab1.columns else school_name
 
-    tab1[school_name] = tab1[school_name].apply(normalize_shool_name)
-    tab1.fillna(value="", inplace=True)
-    s = set(list(tab1[school_name]))
-    s1 = set(list(tab["School_Name"]))
-    print(len(s.intersection(s1)) / len(s))
-    # sys.exit()
-    dict_schooldata_to_ol = {}
-    # print(year)
-    # print(tab['Year'])
-    # sys.exit()
-    for _, row in tab1.iterrows():
+    school_name = "Izglītības iestāde" if "Izglītības iestāde" in tab_exam.columns else "Skola"
+    school_name = "Izglītībasiestāde" if school_name not in tab_exam.columns else school_name
+    school_name = "IzglītībasIestāde" if school_name not in tab_exam.columns else school_name
+    school_name = "Nosaukums" if school_name not in tab_exam.columns else school_name
+
+    novads = "Novads"
+
+    if novads not in tab_exam.columns:
+        tab_exam[novads] = ""
+
+    if tab_exam.shape[1] < 5 and novads not in tab_exam.columns:
+        print(tab_exam.columns)
+        print(tab_exam.shape)
+        sys.exit()
+
+    tab_exam[school_name] = tab_exam[school_name].apply(normalize_shool_name)
+    tab_exam[school_name + "_1"] = tab_exam.apply(lambda row: normalize_shool_name(str(row[novads]) + ", " + row[school_name]), axis=1)
+    tab_exam.fillna(value="", inplace=True)
+
+    # s = set(list(tab_exam[school_name]))
+    # s1 = set(list(tab["School_Name"]))
+    # print(len(s.intersection(s1)) / len(s))
+
+    for _, row in tab_exam.iterrows():
+        r = row["Kopvērtējums"]
+        if isinstance(r, str):
+            r = float(r.replace("%",""))
         set_eksamenu_prieksmeti.add(row['Priekšmets'])
-        years.add(int(year))
-        school_names.add(row[school_name])
-        dict_schooldata_to_ol[(row[school_name], int(year), row['Priekšmets'])] = row["Kopvērtējums"]
-    # for exam in set_eksamenu_prieksmeti:
-    #     column_name = "{}_{}"
-    # print(len(dict_schooldata_to_ol))
-    # # print(tab1)
-    # sys.exit()
+        dict_schooldata_to_ol[(row[school_name], int(year), row['Priekšmets'])] = r
+        dict_schooldata_to_ol[(row[school_name] + "_1", int(year), row['Priekšmets'])] = r
 
-# pprint(list(np.unique(tab['School_Name'])))
-
-s_School_Name = set(list(tab['School_Name']))
-s_Year = set(list(tab['Year']))
-
-print(len(s_School_Name.intersection(school_names)))
-print(len(s_Year.intersection(years)))
-# print(s_Year)
-# print(years)
-print(set_eksamenu_prieksmeti)
-# sys.exit()
-
-print(tab.columns)
-# for exam in set_eksamenu_prieksmeti:
-#
-#     tab[exam] = tab.apply(lambda row: dict_schooldata_to_ol.get((row["School_Name"], int(row["Year"]), exam), -1),axis=1)
-#     print(exam, tab[tab[exam]!=-1].shape[0] / tab.shape[0])
+for exam in set_eksamenu_prieksmeti:
+    tab[exam] = tab.apply(lambda row: dict_schooldata_to_ol.get((row["School_Name"], int(row["Year"]), exam), -1),axis=1)
+    print(exam, tab[tab[exam]!=-1].shape[0] / tab.shape[0])
 
 tab.to_csv("/home/administrator/repos/edufuture/data/modelling_table.csv", sep="|")
 print(tab.shape)
