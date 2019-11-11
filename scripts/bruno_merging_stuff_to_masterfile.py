@@ -5,6 +5,7 @@ import numpy as np
 from glob import glob
 from re import findall
 from scipy.spatial import distance_matrix
+import pickle
 
 # tab = pd.read_excel("/home/administrator/repos/edufuture/data/Master_table_with population.xlsx")
 tab = pd.read_excel("/home/administrator/repos/edufuture/data/Master_table_cleaned_2.xlsx")
@@ -72,8 +73,12 @@ print(tab1.columns)
 # print(tab1)
 # sys.exit()
 
+dict_normletter = { 'ā': 'a', 'č': 'c', 'ē': 'e', 'ģ': 'g', 'ī': 'i', 'ķ': 'k', 'ļ': 'l', 'ņ': 'n', 'š': 's', 'ū': 'u', 'ž': 'z'}
+
 def normalize_shool_name(name):
-    return name.replace(" ", "").lower().replace(".", "").replace(",", "")
+    name = name.replace(" ", "").lower().replace(".", "").replace(",", "").replace('"', '')
+    name = "".join(list(map(lambda letter: dict_normletter.get(letter, letter), name)))
+    return name
 
 tab['School_Name_original'] = tab['School_Name']
 tab['School_Name'] = tab['School_Name'].apply(normalize_shool_name)
@@ -107,11 +112,13 @@ del tab1
 set_eksamenu_prieksmeti = set()
 dict_schooldata_to_ol = {}
 
+list_schools_dont_match = []
+
 for f in glob("/home/administrator/Downloads/Exam results/*.csv"):
     print(f)
     tab_exam = pd.read_csv(f)
     tab_exam.fillna(value="", inplace=True)
-    print(tab_exam.shape)
+    # print(tab_exam.shape)
     year = int(findall(r'[0-9]*_([0-9]*).csv', f)[0])
 
     school_name = "Izglītības iestāde" if "Izglītības iestāde" in tab_exam.columns else "Skola"
@@ -128,9 +135,12 @@ for f in glob("/home/administrator/Downloads/Exam results/*.csv"):
     tab_exam[school_name + "_1"] = tab_exam.apply(lambda row: normalize_shool_name(str(row[novads]) + ", " + row[school_name]), axis=1)
     tab_exam.fillna(value="", inplace=True)
 
-    # s = set(list(tab_exam[school_name]))
-    # s1 = set(list(tab["School_Name"]))
-    # print(len(s.intersection(s1)) / len(s))
+    s = set(list(tab_exam[school_name]))
+    s1 = set(list(tab["School_Name"]))
+    print(len(s.intersection(s1)) / len(s))
+    d = s.difference(s1)
+    d1 = s1.difference(s)
+    list_schools_dont_match.append((d, d1))
 
     for _, row in tab_exam.iterrows():
         r = row["Kopvērtējums"]
@@ -146,3 +156,6 @@ for exam in set_eksamenu_prieksmeti:
 
 tab.to_csv("/home/administrator/repos/edufuture/data/modelling_table.csv", sep="|")
 print(tab.shape)
+
+with open("/home/administrator/repos/edufuture/data/list_schools_dont_match.pickle", "wb") as conn:
+    pickle.dump(list_schools_dont_match, conn)
